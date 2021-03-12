@@ -9,7 +9,7 @@ public interface NoteService {
 
     List<NoteDto> historyById(Long id);
 
-    List<NoteDto> getNotes();
+    List<NoteDto> getListOfAllNotes();
 
     Optional<NoteDto> findById(Long id);
 
