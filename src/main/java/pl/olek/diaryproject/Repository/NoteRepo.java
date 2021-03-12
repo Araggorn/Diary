@@ -11,5 +11,7 @@ public interface NoteRepo extends JpaRepository <Note, Long> {
 
     List<Note> findAllByIsDeletedIsFalse();
 
+    List<Note> findAllByNoteId(Long id);
+
 
 }

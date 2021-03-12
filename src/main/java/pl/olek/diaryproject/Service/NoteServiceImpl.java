@@ -58,16 +58,38 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto updateNote(NoteDto noteDto) {
-        return null;
+        Note note = noteRepo.getOne(noteDto.getId());
+        log.info("updating note id {}", note.getId());
+        note.setIsDeleted(true);
+        noteRepo.save(note);
+        Note updatedNote = new Note();
+        updatedNote.setNoteId(note.getNoteId());
+        updatedNote.setTitle(note.getTitle());
+        updatedNote.setContent(noteDto.getContent());
+        updatedNote.setCreateTime(note.getCreateTime());
+        updatedNote.setIsDeleted(false);
+        updatedNote.setVersion(note.getVersion() + 1);
+        Note savedNote = noteRepo.save(updatedNote);
+        log.info("updated note with id {}", savedNote.getId());
+        return NoteConverter.toDto(savedNote);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        Note note = noteRepo.getOne(id);
+        log.info("deleting note id: {}", id);
+        note.setIsDeleted(true);
+        noteRepo.save(note);
     }
 
     @Override
     public List<NoteDto> historyById(Long id) {
-        return null;
+        log.info("is looking for history of note id {}", id);
+        Long noteId = noteRepo.getOne(id).getNoteId();
+        return noteRepo
+                .findAllByNoteId(noteId)
+                .stream()
+                .map(NoteConverter::toDto)
+                .collect(Collectors.toList());
     }
 }
