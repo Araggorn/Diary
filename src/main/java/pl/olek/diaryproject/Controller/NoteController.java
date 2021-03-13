@@ -50,4 +50,16 @@ private final NoteService noteService;
                 .toUri();
         return ResponseEntity.created(location).body(savedNote);
     }
+
+    @PutMapping("/note/edit/{id}")
+    public ResponseEntity<NoteDto> editNote(NoteDto noteDto, @PathVariable Long id){
+        NoteDto updatedNote = noteService.updateNote(noteDto);
+        return ResponseEntity.ok(updatedNote);
+    }
+
+    @GetMapping("/note/history/{id}")
+    public List<NoteDto> getHistoryOfTheNote(@PathVariable Long id){
+        return noteService.historyById(id);
+
+    }
 }
