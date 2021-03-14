@@ -1,12 +1,16 @@
 package pl.olek.diaryproject.Entity;
 
-import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringJoiner;
 
 @Entity
@@ -19,30 +23,17 @@ public class Note extends ParentEntity{
 
     private String title;
     private String content;
-    private Long version;
-    private Long noteId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Note)) return false;
-        if (!super.equals(o)) return false;
-        Note note = (Note) o;
-        return Objects.equal(title, note.title) && Objects.equal(content, note.content) && Objects.equal(version, note.version) && Objects.equal(noteId, note.noteId);
-    }
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
+    Set<NoteSnapshot> noteSnapshots = new HashSet<>();
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(super.hashCode(), title, content, version, noteId);
-    }
+
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Note.class.getSimpleName() + "[", "]")
                 .add("title='" + title + "'")
                 .add("content='" + content + "'")
-                .add("version=" + version)
-                .add("noteId=" + noteId)
                 .toString();
     }
 }

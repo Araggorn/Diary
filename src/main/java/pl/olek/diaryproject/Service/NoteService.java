@@ -1,6 +1,7 @@
 package pl.olek.diaryproject.Service;
 
-import pl.olek.diaryproject.Dto.NoteDto;
+import pl.olek.diaryproject.dto.EditNoteDto;
+import pl.olek.diaryproject.dto.NoteDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface NoteService {
 
     Optional<NoteDto> findById(Long id);
 
-    NoteDto updateNote (NoteDto noteDto);
+    NoteDto updateNote(EditNoteDto noteDto, Long id);
 
     NoteDto addNote (NoteDto noteDto);
 

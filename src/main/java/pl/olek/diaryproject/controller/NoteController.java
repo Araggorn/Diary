@@ -1,11 +1,11 @@
-package pl.olek.diaryproject.Controller;
+package pl.olek.diaryproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.olek.diaryproject.Dto.NoteDto;
+import pl.olek.diaryproject.dto.EditNoteDto;
+import pl.olek.diaryproject.dto.NoteDto;
 import pl.olek.diaryproject.Service.NoteService;
 
 import java.net.URI;
@@ -14,6 +14,7 @@ import java.util.List;
 @Slf4j
 @RestController
 // @CrossOrigin
+@RequestMapping(path = "/v1/notes")
 public class NoteController {
 
 private final NoteService noteService;
@@ -22,25 +23,25 @@ private final NoteService noteService;
         this.noteService = noteService;
     }
 
-    @GetMapping("/note/list")
+    @GetMapping
     public List<NoteDto> noteList() {
         return noteService.getListOfAllNotes();
     }
 
-    @DeleteMapping("/note/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable Long id) {
-        log.info("Request to deleto note: {}", id);
+        log.info("Request to delete note: {}", id);
         noteService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/note/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<NoteDto> getNoteById(@PathVariable Long id){
         return noteService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @PostMapping("/note/add")
+    @PostMapping
     public ResponseEntity<NoteDto> noteAdd(NoteDto noteDto){
         NoteDto savedNote = noteService.addNote(noteDto);
         URI location = ServletUriComponentsBuilder
@@ -51,13 +52,13 @@ private final NoteService noteService;
         return ResponseEntity.created(location).body(savedNote);
     }
 
-    @PutMapping("/note/edit/{id}")
-    public ResponseEntity<NoteDto> editNote(NoteDto noteDto, @PathVariable Long id){
-        NoteDto updatedNote = noteService.updateNote(noteDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteDto> editNote(EditNoteDto noteDto, @PathVariable Long id){
+        NoteDto updatedNote = noteService.updateNote(noteDto, id);
         return ResponseEntity.ok(updatedNote);
     }
 
-    @GetMapping("/note/history/{id}")
+    @GetMapping("/{id}/history")
     public List<NoteDto> getHistoryOfTheNote(@PathVariable Long id){
         return noteService.historyById(id);
 
