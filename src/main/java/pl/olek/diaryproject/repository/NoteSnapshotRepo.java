@@ -1,8 +1,8 @@
-package pl.olek.diaryproject.Repository;
+package pl.olek.diaryproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.olek.diaryproject.Entity.NoteSnapshot;
+import pl.olek.diaryproject.entity.NoteSnapshot;
 
 @Repository
 public interface NoteSnapshotRepo extends JpaRepository <NoteSnapshot, Long> {

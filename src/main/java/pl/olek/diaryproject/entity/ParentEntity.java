@@ -1,4 +1,4 @@
-package pl.olek.diaryproject.Entity;
+package pl.olek.diaryproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

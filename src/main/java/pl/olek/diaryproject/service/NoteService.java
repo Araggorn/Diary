@@ -1,14 +1,16 @@
-package pl.olek.diaryproject.Service;
+package pl.olek.diaryproject.service;
 
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
+import pl.olek.diaryproject.entity.NoteSnapshot;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface NoteService {
 
-    List<NoteDto> historyById(Long id);
+    Set<NoteSnapshot> historyById(Long id);
 
     List<NoteDto> getListOfAllNotes();
 

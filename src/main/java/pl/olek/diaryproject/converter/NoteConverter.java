@@ -1,7 +1,7 @@
 package pl.olek.diaryproject.converter;
 
 import pl.olek.diaryproject.dto.NoteDto;
-import pl.olek.diaryproject.Entity.Note;
+import pl.olek.diaryproject.entity.Note;
 
 public class NoteConverter {
 

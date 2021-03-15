@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
-import pl.olek.diaryproject.Service.NoteService;
+import pl.olek.diaryproject.entity.NoteSnapshot;
+import pl.olek.diaryproject.service.NoteService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -59,7 +61,7 @@ private final NoteService noteService;
     }
 
     @GetMapping("/{id}/history")
-    public List<NoteDto> getHistoryOfTheNote(@PathVariable Long id){
+    public Set<NoteSnapshot> getHistoryOfTheNote(@PathVariable Long id){
         return noteService.historyById(id);
 
     }

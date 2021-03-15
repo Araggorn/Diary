@@ -1,19 +1,19 @@
-package pl.olek.diaryproject.Service;
+package pl.olek.diaryproject.service;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.olek.diaryproject.Entity.NoteSnapshot;
-import pl.olek.diaryproject.Repository.NoteSnapshotRepo;
+import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.converter.NoteConverter;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
-import pl.olek.diaryproject.Entity.Note;
-import pl.olek.diaryproject.Repository.NoteRepo;
+import pl.olek.diaryproject.entity.Note;
+import pl.olek.diaryproject.repository.NoteRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,13 +74,27 @@ public class NoteServiceImpl implements NoteService {
         log.info("updating note id {}", note.getId());
         note.setIsDeleted(true);
         noteRepo.save(note);
+
         Note updatedNote = new Note();
-        updatedNote.setNoteId(note.getNoteId());
         updatedNote.setTitle(note.getTitle());
         updatedNote.setContent(noteDto.getContent());
         updatedNote.setCreateTime(note.getCreateTime());
         updatedNote.setIsDeleted(false);
-        updatedNote.setVersion(note.getVersion() + 1);
+
+        Set<NoteSnapshot> ns = updatedNote.getNoteSnapshots();
+        Optional<Integer> currentVersion = ns.stream()
+                .map(n -> n.getNoteVersion())
+                .reduce(Integer::max);
+
+
+        NoteSnapshot noteSnapshot = NoteSnapshot.builder()
+                .note(updatedNote)
+                .title(noteDto.getTitle())
+                .content(noteDto.getContent())
+                .noteVersion(1 + currentVersion.orElse(0))
+                .build();
+
+        updatedNote.getNoteSnapshots().add(noteSnapshot);
         Note savedNote = noteRepo.save(updatedNote);
         log.info("updated note with id {}", savedNote.getId());
         return NoteConverter.toDto(savedNote);
@@ -95,13 +109,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<NoteDto> historyById(Long id) {
+    public Set<NoteSnapshot> historyById(Long id) {
         log.info("is looking for history of note id {}", id);
-        NoteSnapshot noteSnapshot = noteRepo.getOne(id).getNoteSnapshots();
-        return noteRepo
-                .findAllByNoteId(noteId)
-                .stream()
-                .map(NoteConverter::toDto)
-                .collect(Collectors.toList());
+        Set<NoteSnapshot> noteSnapshots = noteRepo.getOne(id).getNoteSnapshots();
+        return noteSnapshots;
     }
 }

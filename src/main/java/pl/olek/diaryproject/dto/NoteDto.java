@@ -21,4 +21,4 @@ public class NoteDto {
     private LocalDateTime updateTime;
 }
 
-// TODO - zmienić nazwy pakietów
+
