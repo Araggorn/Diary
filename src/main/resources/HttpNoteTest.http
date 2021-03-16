@@ -1,0 +1,19 @@
+GET http://localhost:8080/v1/notes
+
+###
+
+POST http://localhost:8080/v1/notes
+Content-Type: application/json
+
+{
+"title":  "Maciuś",
+"content":  "aaaabbbb"
+}
+
+###
+
+GET http://localhost:8080/v1/notes/3
+
+###
+
+DELETE http://localhost:8080/v1/notes/3

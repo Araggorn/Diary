@@ -12,6 +12,7 @@ public class NoteConverter {
                 .createTime(note.getCreateTime())
                 .updateTime(note.getUpdateTime())
                 .id(note.getId())
+                .deleted(note.isDeleted())
                 .build();
     }
 }

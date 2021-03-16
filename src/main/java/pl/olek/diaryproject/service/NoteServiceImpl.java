@@ -3,6 +3,7 @@ package pl.olek.diaryproject.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.converter.NoteConverter;
 import pl.olek.diaryproject.dto.EditNoteDto;
@@ -11,6 +12,7 @@ import pl.olek.diaryproject.entity.Note;
 import pl.olek.diaryproject.repository.NoteRepo;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,18 +31,19 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto addNote(NoteDto noteDto) {
+    public NoteDto addNote(CreateNoteDto noteDto) {
         Note note = Note.builder()
                 .title(noteDto.getTitle())
-                .content(noteDto.getContent()).build();
-        note.setIsDeleted(false);
+                .content(noteDto.getContent())
+                .noteSnapshots(new HashSet<>())
+                .build();
+        note.setDeleted(false);
         NoteSnapshot noteSnapshot = NoteSnapshot.builder()
                 .noteVersion(1)
                 .note(note)
                 .title(noteDto.getTitle())
                 .content(noteDto.getContent())
                 .build();
-
         note.getNoteSnapshots().add(noteSnapshot);
         Note noteSaved = noteRepo.save(note);
         log.info("adding note with id {}", noteSaved.getId());
@@ -52,7 +55,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteDto> getListOfAllNotes() {
         log.info("Show whole list of notes");
-        return noteRepo.findAllByIsDeletedIsFalse()
+        return noteRepo.findAllByDeletedIsFalse()
                 .stream()
                 .map(NoteConverter::toDto)
                 .collect(Collectors.toList());
@@ -72,14 +75,14 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto updateNote(EditNoteDto noteDto, Long id) {
         Note note = noteRepo.getOne(id);
         log.info("updating note id {}", note.getId());
-        note.setIsDeleted(true);
+        note.setDeleted(true);
         noteRepo.save(note);
 
         Note updatedNote = new Note();
         updatedNote.setTitle(note.getTitle());
         updatedNote.setContent(noteDto.getContent());
         updatedNote.setCreateTime(note.getCreateTime());
-        updatedNote.setIsDeleted(false);
+        updatedNote.setDeleted(false);
 
         Set<NoteSnapshot> ns = updatedNote.getNoteSnapshots();
         Optional<Integer> currentVersion = ns.stream()
@@ -104,7 +107,7 @@ public class NoteServiceImpl implements NoteService {
     public void deleteById(Long id) {
         Note note = noteRepo.getOne(id);
         log.info("deleting note id: {}", id);
-        note.setIsDeleted(true);
+        note.setDeleted(true);
         noteRepo.save(note);
     }
 

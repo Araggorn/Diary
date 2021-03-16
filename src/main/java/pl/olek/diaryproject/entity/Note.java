@@ -1,9 +1,8 @@
 package pl.olek.diaryproject.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +13,8 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,6 +22,7 @@ import java.util.StringJoiner;
 public class Note extends ParentEntity{
 
     private String title;
+
     private String content;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)

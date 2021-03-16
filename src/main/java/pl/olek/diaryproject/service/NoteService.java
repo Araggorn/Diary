@@ -1,5 +1,6 @@
 package pl.olek.diaryproject.service;
 
+import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
 import pl.olek.diaryproject.entity.NoteSnapshot;
@@ -18,7 +19,7 @@ public interface NoteService {
 
     NoteDto updateNote(EditNoteDto noteDto, Long id);
 
-    NoteDto addNote (NoteDto noteDto);
+    NoteDto addNote (CreateNoteDto noteDto);
 
     void deleteById (Long id);
 
