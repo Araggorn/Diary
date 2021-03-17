@@ -1,7 +1,5 @@
 package pl.olek.diaryproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.persistence.CascadeType;
@@ -19,7 +17,7 @@ import java.util.StringJoiner;
 @NoArgsConstructor
 @Builder
 @Table(name = "diaryNotes")
-public class Note extends ParentEntity{
+public class Note extends ParentEntity {
 
     private String title;
 
@@ -27,7 +25,6 @@ public class Note extends ParentEntity{
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     Set<NoteSnapshot> noteSnapshots = new HashSet<>();
-
 
 
     @Override

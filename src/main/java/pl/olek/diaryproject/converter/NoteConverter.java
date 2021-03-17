@@ -5,7 +5,7 @@ import pl.olek.diaryproject.entity.Note;
 
 public class NoteConverter {
 
-    public static NoteDto toDto(Note note){
+    public static NoteDto toDto(Note note) {
         return NoteDto.builder()
                 .title(note.getTitle())
                 .content(note.getContent())

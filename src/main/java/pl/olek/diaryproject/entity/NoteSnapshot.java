@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Builder
 @Table(name = "note_snapshots")
-public class NoteSnapshot extends ParentEntity{
+public class NoteSnapshot extends ParentEntity {
 
     private Integer noteVersion;
     private String title;

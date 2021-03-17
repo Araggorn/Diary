@@ -3,12 +3,12 @@ package pl.olek.diaryproject.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.olek.diaryproject.dto.CreateNoteDto;
-import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.converter.NoteConverter;
+import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
 import pl.olek.diaryproject.entity.Note;
+import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.repository.NoteRepo;
 
 import javax.transaction.Transactional;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService {
 
     private final NoteRepo noteRepo;
-   // private final NoteSnapshotRepo noteSnapshotRepo;
+    // private final NoteSnapshotRepo noteSnapshotRepo;
 
     public NoteServiceImpl(NoteRepo noteRepo) {
         this.noteRepo = noteRepo;

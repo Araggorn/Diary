@@ -39,14 +39,14 @@ private final NoteRepo noteRepo;
         return noteService.getListOfAllNotes();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id\\d+}")
     public ResponseEntity<?> deleteNote(@PathVariable Long id) {
         log.info("Request to delete note: {}", id);
         noteService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id\\d+}")
     public ResponseEntity<NoteDto> getNoteById(@PathVariable Long id){
         return noteService.findById(id)
                 .map(ResponseEntity::ok)
@@ -57,19 +57,19 @@ private final NoteRepo noteRepo;
         NoteDto savedNote = noteService.addNote(noteDto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{id\\d+}")
                 .buildAndExpand(savedNote.getId())
                 .toUri();
         return ResponseEntity.created(location).body(savedNote);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id\\d+}")
     public ResponseEntity<NoteDto> editNote(EditNoteDto noteDto, @PathVariable Long id){
         NoteDto updatedNote = noteService.updateNote(noteDto, id);
         return ResponseEntity.ok(updatedNote);
     }
 
-    @GetMapping("/{id}/history")
+    @GetMapping("/{id\\d+}/history")
     public Set<NoteSnapshot> getHistoryOfTheNote(@PathVariable Long id){
         return noteService.historyById(id);
 

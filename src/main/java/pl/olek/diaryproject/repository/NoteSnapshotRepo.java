@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import pl.olek.diaryproject.entity.NoteSnapshot;
 
 @Repository
-public interface NoteSnapshotRepo extends JpaRepository <NoteSnapshot, Long> {
+public interface NoteSnapshotRepo extends JpaRepository<NoteSnapshot, Long> {
 
 
 }
