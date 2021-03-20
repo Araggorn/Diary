@@ -1,6 +1,5 @@
 package pl.olek.diaryproject.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +8,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
-import pl.olek.diaryproject.entity.Note;
 import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.repository.NoteRepo;
 import pl.olek.diaryproject.service.NoteService;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -64,9 +62,12 @@ private final NoteRepo noteRepo;
     }
 
     @PutMapping("/{id\\d+}")
-    public ResponseEntity<NoteDto> editNote(EditNoteDto noteDto, @PathVariable Long id){
-        NoteDto updatedNote = noteService.updateNote(noteDto, id);
-        return ResponseEntity.ok(updatedNote);
+    public ResponseEntity<Optional<NoteDto>> editNote(EditNoteDto noteDto, @PathVariable Long id){
+        Optional<NoteDto> updatedNote = Optional.ofNullable(noteService.updateNote(noteDto, id));
+        if (updatedNote.isPresent()){
+        return ResponseEntity.ok(updatedNote);}
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id\\d+}/history")

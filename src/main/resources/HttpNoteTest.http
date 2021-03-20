@@ -12,10 +12,26 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/v1/notes/3
+GET http://localhost:8080/v1/notes/7
 
 ###
 
-DELETE http://localhost:8080/v1/notes/3
+DELETE http://localhost:8080/v1/notes/7
 
-ó
+###
+
+PUT http://localhost:8080/v1/notes/7
+Content-Type: application/json
+
+{
+  "title": "Zosia",
+  "description": "Samosia"
+}
+
+###
+
+GET http://localhost:8080/v1/notes/7/history
+
+###
+
+
