@@ -62,12 +62,8 @@ private final NoteRepo noteRepo;
     }
 
     @PutMapping("/{id\\d+}")
-    public ResponseEntity<Optional<NoteDto>> editNote(EditNoteDto noteDto, @PathVariable Long id){
-        Optional<NoteDto> updatedNote = Optional.ofNullable(noteService.updateNote(noteDto, id));
-        if (updatedNote.isPresent()){
-        return ResponseEntity.ok(updatedNote);}
-        else
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<NoteDto> editNote(EditNoteDto noteDto, @PathVariable Long id){
+
     }
 
     @GetMapping("/{id\\d+}/history")
