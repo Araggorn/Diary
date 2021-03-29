@@ -10,22 +10,23 @@ Content-Type: application/json
   "content": "aaaabbbb"
 }
 
-###
-
-GET http://localhost:8080/v1/notes/7
 
 ###
 
-DELETE http://localhost:8080/v1/notes/7
+GET http://localhost:8080/v1/notes/3
 
 ###
 
-PUT http://localhost:8080/v1/notes/7
+DELETE http://localhost:8080/v1/notes/3
+
+###
+
+PUT http://localhost:8080/v1/notes/3
 Content-Type: application/json
 
 {
   "title": "Zosia",
-  "description": "Samosia"
+  "content": "Samosia"
 }
 
 ###

@@ -1,5 +1,6 @@
 package pl.olek.diaryproject.entity;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.LocatorEx;
 import lombok.*;
 
 import javax.persistence.CascadeType;
@@ -33,5 +34,10 @@ public class Note extends ParentEntity {
                 .add("title='" + title + "'")
                 .add("content='" + content + "'")
                 .toString();
+    }
+
+    public void addNoteSnapshot(NoteSnapshot noteSnapshot){
+        noteSnapshots.add(noteSnapshot);
+        noteSnapshot.setNote(this);
     }
 }

@@ -41,11 +41,10 @@ public class NoteServiceImpl implements NoteService {
         note.setDeleted(false);
         NoteSnapshot noteSnapshot = NoteSnapshot.builder()
                 .noteVersion(1)
-                .note(note)
                 .title(noteDto.getTitle())
                 .content(noteDto.getContent())
                 .build();
-        note.getNoteSnapshots().add(noteSnapshot);
+        note.addNoteSnapshot(noteSnapshot);
         Note noteSaved = noteRepo.save(note);
         log.info("adding note with id {}", noteSaved.getId());
 
@@ -92,31 +91,21 @@ public class NoteServiceImpl implements NoteService {
 
         Note note = noteRepo.getOne(id);
         log.info("updating note id {}", note.getId());
-        note.setDeleted(true);
-        noteRepo.save(note);
+        note.setTitle(noteDto.getTitle());
+        note.setContent(noteDto.getContent());
 
-        Note updatedNote = new Note();
-        updatedNote.setTitle(noteDto.getTitle());
-        updatedNote.setContent(noteDto.getContent());
-        updatedNote.setDeleted(false);
-        updatedNote.setCreateTime(note.getCreateTime());
-       //  updatedNote.setUpdateTime(LocalDateTime.now());  TODO trzeba?
-
-        Set<NoteSnapshot> ns = updatedNote.getNoteSnapshots();
+        Set<NoteSnapshot> ns = note.getNoteSnapshots();
         Optional<Integer> currentVersion = ns.stream()
                 .map(n -> n.getNoteVersion())
                 .reduce(Integer::max);
 
-
         NoteSnapshot noteSnapshot = NoteSnapshot.builder()
-                .note(updatedNote)
                 .title(noteDto.getTitle())
                 .content(noteDto.getContent())
-                .noteVersion(1 + currentVersion.orElse(0))
+                .noteVersion(currentVersion.orElse(0) + 1)
                 .build();
-
-        updatedNote.getNoteSnapshots().add(noteSnapshot);
-        Note savedNote = noteRepo.save(updatedNote);
+        note.addNoteSnapshot(noteSnapshot);
+        Note savedNote = noteRepo.save(note);
         log.info("updated note with id {}", savedNote.getId());
         return NoteConverter.toDto(savedNote);
     }
