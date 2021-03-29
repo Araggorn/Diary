@@ -9,6 +9,6 @@ import java.util.Set;
 @Repository
 public interface NoteSnapshotRepo extends JpaRepository<NoteSnapshot, Long> {
  
-    Set<NoteSnapshot> findAllByDeletedIsFalse = null;
+    Set<NoteSnapshot> findAllByDeletedIsFalse();
 
 }

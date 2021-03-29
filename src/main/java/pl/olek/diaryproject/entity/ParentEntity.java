@@ -72,4 +72,8 @@ public class ParentEntity {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
 }
