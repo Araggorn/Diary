@@ -7,12 +7,13 @@ import pl.olek.diaryproject.converter.NoteConverter;
 import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
+import pl.olek.diaryproject.dto.NoteSnapshotDto;
 import pl.olek.diaryproject.entity.Note;
 import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.repository.NoteRepo;
+import pl.olek.diaryproject.repository.NoteSnapshotRepo;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -25,10 +26,11 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService {
 
     private final NoteRepo noteRepo;
-    // private final NoteSnapshotRepo noteSnapshotRepo;
+    private final NoteSnapshotRepo noteSnapshotRepo;
 
-    public NoteServiceImpl(NoteRepo noteRepo) {
+    public NoteServiceImpl(NoteRepo noteRepo, NoteSnapshotRepo noteSnapshotRepo) {
         this.noteRepo = noteRepo;
+        this.noteSnapshotRepo = noteSnapshotRepo;
     }
 
     @Override
@@ -55,7 +57,8 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteDto> getListOfAllNotes() {
         log.info("Show whole list of notes");
-        return noteRepo.findAllByDeletedIsFalse()
+        return noteRepo
+                .findAllByDeletedIsFalse()
                 .stream()
                 .map(NoteConverter::toDto)
                 .collect(Collectors.toList());
@@ -74,20 +77,6 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public NoteDto updateNote(EditNoteDto noteDto, Long id) {
 
-//        Note note = noteRepository.getOne(noteDto.getId());
-//        log.info("updating note with id {}",note.getId());
-//        note.setDeleted(true);
-//        noteRepository.save(note);
-//        Note noteToUpdate = new Note();
-//        noteToUpdate.setOriginalId(note.getOriginalId());
-//        noteToUpdate.setTitle(noteDto.getTitle());
-//        noteToUpdate.setContent(noteDto.getContent());
-//        noteToUpdate.setCreated(note.getCreated());
-//        noteToUpdate.setDeleted(false);
-//        noteToUpdate.setVersion(note.getVersion()+1);
-//        Note savedNote = noteRepository.save(noteToUpdate);
-//        log.info("updated note has id {}",savedNote.getId());
-//        return NoteConverter.toDto(savedNote);
 
         Note note = noteRepo.getOne(id);
         log.info("updating note id {}", note.getId());
@@ -119,9 +108,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Set<NoteSnapshot> historyById(Long id) {
+    public List<NoteSnapshotDto> historyById(Long id) {
         log.info("is looking for history of note id {}", id);
-        Set<NoteSnapshot> noteSnapshots = noteRepo.getOne(id).getNoteSnapshots();
+        List<NoteSnapshotDto> noteSnapshots = noteRepo.getOne(id).getNoteSnapshots();
         return noteSnapshots;
     }
 }
