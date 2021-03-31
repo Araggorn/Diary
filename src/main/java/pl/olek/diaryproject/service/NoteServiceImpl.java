@@ -4,6 +4,7 @@ package pl.olek.diaryproject.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.olek.diaryproject.converter.NoteConverter;
+import pl.olek.diaryproject.converter.NoteSnapshotConverter;
 import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
@@ -14,10 +15,7 @@ import pl.olek.diaryproject.repository.NoteRepo;
 import pl.olek.diaryproject.repository.NoteSnapshotRepo;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,7 +108,12 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteSnapshotDto> historyById(Long id) {
         log.info("is looking for history of note id {}", id);
-        List<NoteSnapshotDto> noteSnapshots = noteRepo.getOne(id).getNoteSnapshots();
-        return noteSnapshots;
+        return noteRepo
+                .getOne(id)
+                .getNoteSnapshots()
+                .stream()
+                .map(NoteSnapshotConverter::toDto)
+                .sorted(Comparator.comparing(NoteSnapshotDto::getNoteVersion))
+                .collect(Collectors.toList());
     }
 }

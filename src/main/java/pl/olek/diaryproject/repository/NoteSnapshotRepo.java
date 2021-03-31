@@ -9,6 +9,6 @@ import java.util.Set;
 @Repository
 public interface NoteSnapshotRepo extends JpaRepository<NoteSnapshot, Long> {
  
-    Set<NoteSnapshot> findAllByNoteId(Long noteId);
+    //Set<NoteSnapshot> findAllByNoteId(Long noteId);
 
 }

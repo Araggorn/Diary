@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
+import pl.olek.diaryproject.dto.NoteSnapshotDto;
 import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.repository.NoteRepo;
 import pl.olek.diaryproject.service.NoteService;
@@ -68,7 +69,7 @@ private final NoteRepo noteRepo;
     }
 
     @GetMapping("/{id:\\d+}/history")
-    public Set<NoteSnapshot> getHistoryOfTheNote(@PathVariable Long id){
+    public List<NoteSnapshotDto> getHistoryOfTheNote(@PathVariable Long id){
         return noteService.historyById(id);
 
     }
