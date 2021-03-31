@@ -4,11 +4,9 @@ import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
 import pl.olek.diaryproject.dto.NoteSnapshotDto;
-import pl.olek.diaryproject.entity.NoteSnapshot;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface NoteService {
 

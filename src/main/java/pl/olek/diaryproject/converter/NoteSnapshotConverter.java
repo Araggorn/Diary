@@ -5,7 +5,7 @@ import pl.olek.diaryproject.entity.NoteSnapshot;
 
 public class NoteSnapshotConverter {
 
-    public static NoteSnapshotDto toDto(NoteSnapshot noteSnapshot){
+    public static NoteSnapshotDto toDto(NoteSnapshot noteSnapshot) {
         return NoteSnapshotDto.builder()
                 .title(noteSnapshot.getTitle())
                 .content(noteSnapshot.getContent())

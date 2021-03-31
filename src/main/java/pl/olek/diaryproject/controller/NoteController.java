@@ -9,15 +9,12 @@ import pl.olek.diaryproject.dto.CreateNoteDto;
 import pl.olek.diaryproject.dto.EditNoteDto;
 import pl.olek.diaryproject.dto.NoteDto;
 import pl.olek.diaryproject.dto.NoteSnapshotDto;
-import pl.olek.diaryproject.entity.NoteSnapshot;
 import pl.olek.diaryproject.repository.NoteRepo;
 import pl.olek.diaryproject.service.NoteService;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -25,8 +22,8 @@ import java.util.Set;
 @RequestMapping(path = "/v1/notes")
 public class NoteController {
 
-private final NoteService noteService;
-private final NoteRepo noteRepo;
+    private final NoteService noteService;
+    private final NoteRepo noteRepo;
 
     public NoteController(NoteService noteService, NoteRepo noteRepo) {
         this.noteService = noteService;
@@ -46,13 +43,14 @@ private final NoteRepo noteRepo;
     }
 
     @GetMapping("/{id:\\d+}")
-    public ResponseEntity<NoteDto> getNoteById(@PathVariable("id") Long id){
+    public ResponseEntity<NoteDto> getNoteById(@PathVariable("id") Long id) {
         return noteService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PostMapping
-    public ResponseEntity<NoteDto> noteAdd(@RequestBody CreateNoteDto noteDto){
+    public ResponseEntity<NoteDto> noteAdd(@RequestBody CreateNoteDto noteDto) {
         NoteDto savedNote = noteService.addNote(noteDto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -63,13 +61,13 @@ private final NoteRepo noteRepo;
     }
 
     @PutMapping("/{id:\\d+}")
-    public ResponseEntity<NoteDto> editNote(@RequestBody EditNoteDto noteDto, @PathVariable Long id){
+    public ResponseEntity<NoteDto> editNote(@RequestBody EditNoteDto noteDto, @PathVariable Long id) {
         NoteDto noteDtoResult = noteService.updateNote(noteDto, id);
-       return ResponseEntity.ok(noteDtoResult);
+        return ResponseEntity.ok(noteDtoResult);
     }
 
     @GetMapping("/{id:\\d+}/history")
-    public List<NoteSnapshotDto> getHistoryOfTheNote(@PathVariable Long id){
+    public List<NoteSnapshotDto> getHistoryOfTheNote(@PathVariable Long id) {
         return noteService.historyById(id);
 
     }
