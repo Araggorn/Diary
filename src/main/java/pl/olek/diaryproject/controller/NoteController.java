@@ -15,6 +15,8 @@ import pl.olek.diaryproject.service.NoteService;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collector;
 
 @Slf4j
 @RestController
@@ -79,9 +81,25 @@ public class NoteController {
                 .content("BB")
                 .build());
 
-//        noteRepo.save(Note.builder()
-//                .noteSnapshots(null)
-//                .title("AAAA")
-//                .content("as").build());
     }
+
+    @GetMapping("/{id:\\d+}/originalversion")
+    public NoteSnapshotDto getOriginalVersion (@PathVariable Long id) {
+        List<NoteSnapshotDto> noteSnapshotDtos = noteService.historyById(id);
+        NoteSnapshotDto result = noteSnapshotDtos.stream()
+                .filter(n -> n.getNoteVersion() == 1)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("not found"));
+        return result;
+    }
+
+    @GetMapping("note/{id:\\d+}/version/{versionId:\\d+}")
+    public NoteSnapshotDto getChosenVersion (@PathVariable Long id, @PathVariable Integer versionId){
+        List<NoteSnapshotDto> noteSnapshotDtos = noteService.historyById(id);
+        return noteSnapshotDtos.stream()
+                .filter(n -> n.getNoteVersion() == versionId)
+                .findFirst()
+                .orElseThrow(() -> new NullPointerException("not found"));
+    }
+
 }

@@ -37,4 +37,12 @@ GET http://localhost:8080/v1/notes/3/history
 
 GET http://localhost:8080/v1/notes/3
 
+###
+
+GET http://localhost:8080/v1/notes/3/originalversion
+
+###
+
+GET http://localhost:8080/v1/notes/note/3/version/2
+
 

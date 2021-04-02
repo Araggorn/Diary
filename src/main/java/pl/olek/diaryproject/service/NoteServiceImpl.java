@@ -91,6 +91,7 @@ public class NoteServiceImpl implements NoteService {
                 .content(noteDto.getContent())
                 .noteVersion(currentVersion.orElse(0) + 1)
                 .build();
+
         note.addNoteSnapshot(noteSnapshot);
         Note savedNote = noteRepo.save(note);
         log.info("updated note with id {}", savedNote.getId());
