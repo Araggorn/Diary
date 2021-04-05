@@ -15,12 +15,9 @@ import pl.olek.diaryproject.service.NoteService;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 
 @Slf4j
 @RestController
-// @CrossOrigin
 @RequestMapping(path = "/v1/notes")
 public class NoteController {
 
@@ -84,7 +81,7 @@ public class NoteController {
     }
 
     @GetMapping("/{id:\\d+}/originalversion")
-    public NoteSnapshotDto getOriginalVersion (@PathVariable Long id) {
+    public NoteSnapshotDto getOriginalVersion(@PathVariable Long id) {
         List<NoteSnapshotDto> noteSnapshotDtos = noteService.historyById(id);
         NoteSnapshotDto result = noteSnapshotDtos.stream()
                 .filter(n -> n.getNoteVersion() == 1)
@@ -94,7 +91,7 @@ public class NoteController {
     }
 
     @GetMapping("note/{id:\\d+}/version/{versionId:\\d+}")
-    public NoteSnapshotDto getChosenVersion (@PathVariable Long id, @PathVariable Integer versionId){
+    public NoteSnapshotDto getChosenVersion(@PathVariable Long id, @PathVariable Integer versionId) {
         List<NoteSnapshotDto> noteSnapshotDtos = noteService.historyById(id);
         return noteSnapshotDtos.stream()
                 .filter(n -> n.getNoteVersion() == versionId)
