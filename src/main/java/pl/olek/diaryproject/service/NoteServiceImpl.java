@@ -117,4 +117,5 @@ public class NoteServiceImpl implements NoteService {
                 .sorted(Comparator.comparing(NoteSnapshotDto::getNoteVersion))
                 .collect(Collectors.toList());
     }
+
 }
